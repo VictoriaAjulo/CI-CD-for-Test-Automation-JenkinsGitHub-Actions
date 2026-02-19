@@ -13,6 +13,8 @@ pipeline {
             environment {
                 HOME = "/tmp"
                 GOCACHE = "/tmp/go-build"
+                GOPATH = "/tmp/go"
+                GOMODCACHE = "/tmp/go/pkg/mod"
             }
 
             steps {
