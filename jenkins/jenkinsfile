@@ -10,6 +10,11 @@ pipeline {
                 }
             }
 
+            environment {
+                HOME = "/tmp"
+                GOCACHE = "/tmp/go-build"
+            }
+
             steps {
                dir('bugtracker-backend'){
                     sh 'go test -v ./...'
