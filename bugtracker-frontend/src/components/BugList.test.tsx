@@ -66,9 +66,10 @@ describe("BugList", () => {
   ];
 
   beforeEach(() => {
+    jest.clearAllMocks();
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
     (getBugs as jest.Mock).mockResolvedValue(mockBugs);
-    jest.clearAllMocks();
+
   });
 
   const renderAndWaitForData = async () => {
@@ -92,7 +93,7 @@ describe("BugList", () => {
     it("should show error message if bugs fetch fails", async () => {
       const consoleErrorSpy = jest
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
       (getBugs as jest.Mock).mockRejectedValue(new Error("Failed to fetch"));
       render(<BugList />);
       await waitFor(() => {
@@ -241,10 +242,12 @@ describe("BugList", () => {
     });
   });
 
-  it("displays the correct version number", () => {
-    render(<BugList />);
-
+  it("displays the correct version number", async () => {
+    await act(async () => {
+      render(<BugList />);
+    });
     expect(screen.getByText(`v${APP_VERSION}`)).toBeInTheDocument();
+
   });
 
   it("displays the version number in the header", () => {
