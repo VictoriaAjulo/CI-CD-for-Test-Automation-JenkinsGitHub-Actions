@@ -19,6 +19,7 @@ pipeline {
 
             steps {
                dir('bugtracker-backend'){
+                    sh 'mkdir -p /tmp/go/pkg/mod /tmp/go-build'
                     sh 'go test -v ./...'
                }
             }
