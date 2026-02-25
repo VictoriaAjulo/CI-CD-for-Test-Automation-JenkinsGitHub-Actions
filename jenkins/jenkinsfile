@@ -14,10 +14,10 @@ pipeline {
                     }
 
                     environment {
-                        HOME        = '/tmp'
-                        GOCACHE     = '/tmp/go-build'
-                        GOPATH      = '/tmp/go'
-                        GOMODCACHE  = '/tmp/go/pkg/mod'
+                        HOME       = '/tmp'
+                        GOCACHE    = '/tmp/go-build'
+                        GOPATH     = '/tmp/go'
+                        GOMODCACHE = '/tmp/go/pkg/mod'
                     }
 
                     steps {
@@ -77,30 +77,31 @@ pipeline {
                                 reportFiles: 'index.html',
                                 reportName : 'Frontend Coverage Report'
                             ]
-                           
                         }
-                    }
-                }
-                stage('Launch Application'){
-                    agent{
-                        docker{
-                            image 'docker:27.5.1'
-                            reuseNode true
-                            args '-v /var/run.sock:/var/run/docker.sock -u 0'
-
-                        }
-                    }
-                    steps{
-                        sh 'docker compose up --build -d'
-                    }
-                }
-                post{
-                    always{
-                         cleanWs()
                     }
                 }
 
             }
+        }
+
+        stage('Launch Application') {
+            agent {
+                docker {
+                    image 'docker:27.5.1'
+                    reuseNode true
+                    args '-v /var/run/docker.sock:/var/run/docker.sock -u 0'
+                }
+            }
+
+            steps {
+                sh 'docker compose up --build -d'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
